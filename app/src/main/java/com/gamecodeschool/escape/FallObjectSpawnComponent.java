@@ -2,7 +2,7 @@ package com.gamecodeschool.escape;
 
 import java.util.Random;
 
-public class BoostSpawnComponent implements SpawnComponent{
+public class FallObjectSpawnComponent implements SpawnComponent{
 
     @Override
     public void spawn(MovementInfo playerM, MovementInfo cObjectM) {
@@ -11,7 +11,7 @@ public class BoostSpawnComponent implements SpawnComponent{
 
         float yPos = 0;
 
-        xPos = random.nextFloat() * cObjectM.getScreenSize().x - 125;
+        xPos = random.nextFloat() * (cObjectM.getScreenSize().x - 125) + 125;
         yPos = 0;
 
         cObjectM.setLocation(xPos, yPos);

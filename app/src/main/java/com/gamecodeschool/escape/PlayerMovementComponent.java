@@ -2,67 +2,54 @@ package com.gamecodeschool.escape;
 
 import android.graphics.PointF;
 
+
 public class PlayerMovementComponent implements MovementComponent {
 
-    public void move(long fps, MovementInfo m, MovementInfo playerM) {
+    @Override
+    public boolean move(long fps, MovementInfo m, MovementInfo playerM) {
         float screenHeight = m.getScreenSize().y;
-        float angle;
+        PointF velocity;
+        m.resetMovement();
 
         PointF location = m.getLocation();
+        System.out.println(m.getSpeed().x);
 
-        float speed = m.getSpeed();
+        if (m.isAvailableToMove()) {
+            m.setVComponents();
+            velocity = m.getVComponents();
+            location.x += velocity.x / fps;
+            location.y += velocity.y / fps;
 
-        float height = m.getObjectHeight();
+            if (velocity.x > 0) {
+                m.headRight();
+            }
 
-        if (m.headingDown()) {
-            location.y += speed / fps;
+            else if (velocity. x < 0) {
+                m.headLeft();
+            }
+
         }
 
-        else if (m.headingUp()) {
-            location.y -= speed / fps;
-        }
-
-        else if (m.headingLeft()) {
-            location.x -= speed / fps;
-        }
-
-        else if (m.headingRight()) {
-            location.x += speed / fps;
-        }
-
-        else if (m.headingDR()) {
-            angle = (3.14f / 6f);
-            location.x += (float)Math.cos(angle) * speed;
-            location.y -= (float)Math.sin(angle) * speed;
-        }
-
-        else if (m.headingDL()) {
-            angle = (5f * 3.14f) / 6f;
-            location.x -= (float)Math.cos(angle) * speed;
-            location.y -= (float)Math.sin(angle) * speed;
-        }
-
-        else if (m.headingBDR()) {
-            angle = (11f * 3.14f) / 6f;
-            location.x += (float)Math.cos(angle) * speed;
-            location.y += (float)Math.sin(angle) * speed;
-        }
-
-        else if (m.headingBDL()) {
-            angle = (7f * 3.14f) / 6f;
-
-            location.x -= (float)Math.cos(angle) * speed;
-            location.y += (float)Math.sin(angle) * speed;
-        }
-
-        if (location.y > screenHeight - height) {
-            location.y = screenHeight - height;
+        if (location.y > (screenHeight - m.getObjectHeight())) {
+            location.y = screenHeight - m.getObjectHeight();
         }
 
         else if (location.y < 0) {
             location.y = 0;
         }
 
+        if (location.x > (m.getScreenSize().x - 165)) {
+            location.x = m.getScreenSize().x - 165;
+        }
+
+        else if (location.x < 0) {
+            location.x = 0;
+        }
+
         m.updateCollider();
+
+        return true;
     }
+
+
 }

@@ -6,14 +6,15 @@ abstract class ObjectSpec {
     private String mTag;
     private String mBitmapName;
     private float mSpeed;
-    private float mSizeScale;
+    private PointF mSizeScale;
     private String[] mComponents;
 
-    ObjectSpec(String tag, float speed, String bitmapName, String[] components) {
+    ObjectSpec(String tag, float speed, String bitmapName, PointF relativeScale, String[] components) {
         mTag = tag;
         mSpeed = speed;
         mBitmapName = bitmapName;
         mComponents = components;
+        mSizeScale = relativeScale;
     }
 
 
@@ -29,7 +30,7 @@ abstract class ObjectSpec {
         return mSpeed;
     }
 
-    float getSizeScale() {
+    PointF getSizeScale() {
         return mSizeScale;
     }
 

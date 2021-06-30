@@ -2,29 +2,32 @@ package com.gamecodeschool.escape;
 
 public class BackgroundMovementComponent implements MovementComponent {
 
+    // Same exact concept as ScrollingShooter.
+
     @Override
-    public void move(long fps, MovementInfo m, MovementInfo playerM) {
+    public boolean move(long fps, MovementInfo m, MovementInfo playerM) {
         int currentXClip = m.getXClip();
 
-        if (playerM.headingDR()){
-            currentXClip -= m.getSpeed() / fps;
-            m.setXClip(currentXClip);
-        }
-
-        else if (playerM.headingDL()) {
-            currentXClip += m.getSpeed() / fps;
-            m.setXClip(currentXClip);
-        }
-
-        else if (playerM.headingLeft()) {
-            currentXClip += m.getSpeed() / fps;
+        if (playerM.headingLeft()) {
+            currentXClip += m.getSpeed().x / fps;
             m.setXClip(currentXClip);
         }
 
         else if (playerM.headingRight()) {
-            currentXClip -= m.getSpeed() / fps;
+            currentXClip -= m.getSpeed().x / fps;
             m.setXClip(currentXClip);
         }
 
+        if (currentXClip >= m.getSize().x) {
+            m.setXClip(0);
+            m.flipReversedFirst();
+        }
+
+        else if (currentXClip <= 0) {
+            m.setXClip((int)m.getSize().x);
+            m.flipReversedFirst();
+        }
+
+        return true;
     }
 }

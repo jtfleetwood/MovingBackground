@@ -1,6 +1,7 @@
 package com.gamecodeschool.escape;
 
 import android.graphics.RectF;
+import android.util.Pair;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
@@ -14,59 +15,29 @@ public class PlayerInputComponent implements InputComponent, InputObserver {
     }
 
     @Override
-    public void handleInput(MotionEvent event, GameState gs, ArrayList<RectF> controls) {
+    public void handleInput(MotionEvent event, GameState gs, Pair<RectF, Joystick> controls) {
         int i = event.getActionIndex();
         int x = (int) event.getX(i);
         int y = (int) event.getY(i);
+        Joystick localJS = controls.second;
+
 
         switch(event.getAction() & MotionEvent.ACTION_MASK){
             case MotionEvent.ACTION_UP:
-                if (controls.get(HUD.UP).contains(x, y) || controls.get(HUD.DOWN).contains(x, y)) {
-                    movementInfo.stopVertical();
-                }
 
-                else if (controls.get(HUD.LD).contains(x, y) || controls.get(HUD.RD).contains(x, y) ||
-                        controls.get(HUD.BDR).contains(x,y) || controls.get(HUD.BDL).contains(x, y)) {
-                    movementInfo.stopDiagonal();
-                }
+                if (localJS.isCircleTouched(x, y)) {
+                    movementInfo.resetMovementAvailability();
 
-                else if (controls.get(HUD.LEFT).contains(x, y) || controls.get(HUD.RIGHT).contains(x, y)) {
-                    movementInfo.stopHorizontal();
                 }
 
                 break;
 
             case MotionEvent.ACTION_DOWN:
-                if (controls.get(HUD.UP).contains(x, y)) {
-                    movementInfo.headUp();
-                }
 
-                else if (controls.get(HUD.DOWN).contains(x, y)) {
-                    movementInfo.headDown();
-                }
+                if (localJS.isCircleTouched(x, y)) {
+                    movementInfo.setAngle(localJS.calcAngle(x, y));
+                    movementInfo.setMovementAvailability();
 
-                else if (controls.get(HUD.LEFT).contains(x, y)) {
-                    movementInfo.headLeft();
-                }
-
-                else if (controls.get(HUD.RIGHT).contains(x, y)) {
-                    movementInfo.headRight();
-                }
-
-                else if (controls.get(HUD.RD).contains(x, y)) {
-                    movementInfo.headDR();
-                }
-
-                else if (controls.get(HUD.LD).contains(x, y)) {
-                    movementInfo.headDL();
-                }
-
-                else if (controls.get(HUD.BDR).contains(x, y)) {
-                    movementInfo.headingBDR();
-                }
-
-                else if (controls.get(HUD.BDL).contains(x, y)) {
-                    movementInfo.headingBDL();
                 }
 
                 break;

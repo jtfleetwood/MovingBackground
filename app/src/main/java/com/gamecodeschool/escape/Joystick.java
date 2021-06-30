@@ -5,15 +5,11 @@ import android.graphics.PointF;
 public class Joystick {
     private float mRadius;
     private PointF mCenter;
-    private double angleInRad;
-    private boolean isCircleTouched;
-    private PointF vComponent;
 
 
-    Circle(float x, float y, float r) {
+    Joystick(float x, float y, float r) {
         mRadius = r;
         mCenter = new PointF(x, y);
-        vComponent = new PointF();
     }
 
     PointF getLocation() {
@@ -39,34 +35,12 @@ public class Joystick {
 
     }
 
-    boolean getCircleTouched() {
-        return isCircleTouched;
-    }
+    double calcAngle(int x, int y) {
+        double angleInRad = Math.atan2(y - mCenter.y, x - mCenter.x);
 
-    void calcAngle(int x, int y) {
-        angleInRad = Math.atan2(y - mCenter.y, x - mCenter.x);
-
-    }
-
-    double getAngle() {
         return angleInRad;
+
     }
-
-    PointF getVelocity(float speed) {
-        vComponent.x = (float)Math.cos(angleInRad) * speed;
-        vComponent.y = (float)Math.sin(angleInRad) * speed;
-
-        return vComponent;
-    }
-
-    void setTouchLift() {
-        isCircleTouched = false;
-    }
-
-    void setTouchDown() {
-        isCircleTouched = true;
-    }
-
 
 
 }

@@ -8,11 +8,14 @@ public class GameState {
     private static volatile boolean mPaused = true;
     private static volatile boolean mGameOver = true;
     private static volatile boolean mDrawing = false;
+    private static volatile boolean mJustLostLife = false;
+    private static volatile int numGames;
 
     private GameStarter gameStarter;
     private int mScore;
     private int mHighScore;
     private int mLives;
+    private long mGameStartTime;
 
     private SharedPreferences.Editor mEditor;
 
@@ -53,10 +56,11 @@ public class GameState {
         }
     }
 
+
+
     void startNewGame() {
         mScore = 0;
         mLives = 3;
-
         // Stopping drawing because of the object update that has to occur below.
         stopDrawing();
 
@@ -64,21 +68,27 @@ public class GameState {
         gameStarter.deSpawnReSpawn();
 
         resume();
+        mGameStartTime = System.currentTimeMillis();
 
         startDrawing();
+
     }
 
-    void loseLife(SoundEngine se) {
+    void loseLife() {
         mLives--;
-
-        se.playPlayerExplode();
+        mJustLostLife = true;
 
         if (mLives == 0) {
+            numGames++;
             pause();
-
             endGame();
         }
     }
+
+    boolean wasLifeLost() {
+        return mJustLostLife;
+    }
+
 
     int getLives(){
 
@@ -86,10 +96,16 @@ public class GameState {
 
     }
 
-    void increaseScore(){
+    void increaseScore(long currentTime){
 
-        mScore++;
+        if (((currentTime - mGameStartTime) % 1000) < 25) {
+            mScore++;
+        }
 
+    }
+
+    int getNumGames() {
+        return numGames;
     }
 
     int getScore(){
@@ -110,11 +126,11 @@ public class GameState {
 
     }
 
+
     void resume(){
-
         mGameOver = false;
-
         mPaused = false;
+        mJustLostLife = false;
 
     }
 
