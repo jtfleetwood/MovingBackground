@@ -2,6 +2,7 @@ package com.gamecodeschool.escape;
 
 import android.graphics.PointF;
 
+// Identical object to the Boost game object, however has different affect on player upon collision. (player loses life)
 public class DangerBubbleSpec extends ObjectSpec{
     private static final String mTag = "DangerBubble";
     private static final String mBitmapName = "dirtybubble";

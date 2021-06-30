@@ -3,6 +3,7 @@ package com.gamecodeschool.escape;
 import android.content.Context;
 import android.graphics.*;
 
+// Same implementation as ScrollingShooter.
 public class StdGraphicsComponent implements GraphicsComponent {
     private Bitmap mBitmap;
     private Bitmap mBitmapReversed;

@@ -3,6 +3,7 @@ package com.gamecodeschool.escape;
 import android.content.Context;
 import android.graphics.PointF;
 
+// Overall same concept as ScrollingShoooter.
 public class GameObjectFactory {
     private Context mContext;
     private PointF mScreenSize;
@@ -24,7 +25,7 @@ public class GameObjectFactory {
 
         object.setMTag(spec.getTag());
 
-        // Creating speed relative to screen size;
+        // For our game, we have both vertical/horizontal movement suggesting a need for PointF data structure to hold speed components (x/y).
         PointF speed = new PointF();
 
         speed.x = mScreenSize.x / spec.getSpeed();
@@ -101,7 +102,7 @@ public class GameObjectFactory {
 
 
                 default:
-
+                    // Debug print statement that can really help out with debugging when adding new components to Factory.
                     System.out.println(spec.getComponents()[i] + "Was not loaded properly in the object.\n");
 
                     break;

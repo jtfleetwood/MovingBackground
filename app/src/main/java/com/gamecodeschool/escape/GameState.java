@@ -3,18 +3,22 @@ package com.gamecodeschool.escape;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+// Largely unchanged compared to ScrollingShooter.
 public class GameState {
     private static volatile boolean mThreadRunning = false;
     private static volatile boolean mPaused = true;
     private static volatile boolean mGameOver = true;
     private static volatile boolean mDrawing = false;
+    // New bool variable to indicate when a life was just lost - helps us know what UI pause screen to provide upon drawing HUD.
     private static volatile boolean mJustLostLife = false;
+    // Same purpose as above, let's us know whether to provide initial UI welcome screen or losing screen.
     private static volatile int numGames;
 
     private GameStarter gameStarter;
     private int mScore;
     private int mHighScore;
     private int mLives;
+    // Used to compare current time within game loop to assign points (gain one every second).
     private long mGameStartTime;
 
     private SharedPreferences.Editor mEditor;
@@ -61,13 +65,13 @@ public class GameState {
     void startNewGame() {
         mScore = 0;
         mLives = 3;
-        // Stopping drawing because of the object update that has to occur below.
         stopDrawing();
 
         // Triggers execution of deSpawnRespawn method for our GameEngine object.
         gameStarter.deSpawnReSpawn();
 
         resume();
+        // Game start time used to assign points vs. current game loop time.
         mGameStartTime = System.currentTimeMillis();
 
         startDrawing();
@@ -79,11 +83,14 @@ public class GameState {
         mJustLostLife = true;
 
         if (mLives == 0) {
+            // Let's us know whether to indicate our primary welcome screen, or a losing screen.
             numGames++;
             pause();
             endGame();
         }
     }
+
+    // Getter function to use within HUD class when drawing different UIs/Pause screens.
 
     boolean wasLifeLost() {
         return mJustLostLife;
@@ -96,8 +103,13 @@ public class GameState {
 
     }
 
+    // Explained above, increasing score upon each second that passes.
     void increaseScore(long currentTime){
-
+        /*
+        Not the best precision below.. Game loop will not update exactly after a second passes most of times and average
+        deviation was ~25-30 ms, which compounded overtime can make a difference but not crucial for this project as this
+        serves as a framework.
+         */
         if (((currentTime - mGameStartTime) % 1000) < 25) {
             mScore++;
         }

@@ -10,6 +10,8 @@ import androidx.core.util.ObjectsCompat;
 import java.util.ArrayList;
 import java.util.Random;
 
+// Overall, same exact set-up as ScrollingShooter.
+// Implementing GameEngineBroadcaster to send touch information to our input observers (UI/Player Input)
 public class GameEngine extends SurfaceView implements GameEngineBroadcaster, GameStarter, Runnable {
     private Thread mThread = null;
     private long mFPS;
@@ -36,6 +38,9 @@ public class GameEngine extends SurfaceView implements GameEngineBroadcaster, Ga
         mRenderer = new Renderer(this);
         mPhysicsEngine = new PhysicsEngine();
         objectContainer = new GameObjectContainer(context, new PointF(size.x, size.y), this);
+
+        // Used to randomly spawn falling objects. Did not want to continually initialize this variable within a method.
+        // May not be truly random..
         random = new Random();
 
     }
@@ -52,7 +57,11 @@ public class GameEngine extends SurfaceView implements GameEngineBroadcaster, Ga
             ArrayList<GameObject> objects = objectContainer.getGameObjects();
 
             if (!mGameState.getPaused()) {
+                // Randomly spawning falling objects.
                 randomSpawnBoost();
+                // If collision occurred, respawn all objects and pause. Allows for better game flow, especially with chasing.
+                // Tracking points within Physics engine too as we are comparing the game start time within GameStarter to the passed in current time.
+                // Point system revolves around amount of seconds staying alive (not exact seconds - may be off by ~30 ms) - will explain.
                 if (mPhysicsEngine.update(mFPS, objects, mGameState, frameStartTime)) {
                     deSpawnReSpawn();
 
@@ -76,6 +85,7 @@ public class GameEngine extends SurfaceView implements GameEngineBroadcaster, Ga
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
 
+        // Upon touch event, sending information to our input observers, so proper operations can follow.
         for (InputObserver o : inputObservers) {
             o.handleInput(motionEvent, mGameState, mHud.getControls());
         }
@@ -111,47 +121,28 @@ public class GameEngine extends SurfaceView implements GameEngineBroadcaster, Ga
             o.setInactive();
         }
 
-        // Spawning just the player and background, needing transform information for that (location/speed,etc)
+        // Only spawning Player, Background, and NPC upon new Round/Game start.
         objects.get(objectContainer.PLAYER_INDEX).spawn(objects.get(objectContainer.PLAYER_INDEX).getMovementInfo());
 
-        // Each different object will call their different implementation of spawn component (hence spawn component aggregated in gameObject).
+
         objects.get(objectContainer.BACKGROUND_INDEX).spawn(objects.get(objectContainer.PLAYER_INDEX).getMovementInfo());
         objects.get(GameObjectContainer.NPC_INDEX).spawn(objects.get(objectContainer.PLAYER_INDEX).getMovementInfo());
 
 
-
-        /* ECS Consists of:
-         * An abstract object spec consisting of different components that can be extended and filled in by concrete
-         * classes that inherit from the object spec class. Ex: BackgroundSpec (contains backgroundGraphicsComponent,etc).
-         * These discussed components are interfaces that are implemented by concrete classes, for which their names
-         * are included within the object spec. Ex: A Graphics component (interface) would be implemented by a concrete
-         * BackgroundGraphicsComponent class and added as a component within the background object spec's concrete class
-         * within the array of strings that details needed components for the object spec.
-         *
-         * These component lists are used by the GameObjectFactory create method that will iterate through a passed in object
-         * spec's component list and create a new game object and sets behavior accordingly for each component iterated over.
-         * These concrete class components that are passed into the object component setter's are passed in as interfaces.
-         *
-         * Levels then creates a game object array and uses the object factory to create new game objects based off the passed
-         * in spec objects, and these objects are indexed.
-         *
-         * GameObject in an abstract manner calls all of the methods relating to different components of behavior for each
-         * object within it's own methods in the class. GameObject calls draw --> calls draw method from player graphics component.
-         *
-         */
-
     }
 
+    // Randomly spawning falling objects.. The Danger Bubble/Boost object.
     public void randomSpawnBoost() {
         ArrayList<GameObject> objects = objectContainer.getGameObjects();
 
+        // Assigning probability below..
         int SPAWN_BOOST = 5;
         int SPAWN_DBUBBLE = 25;
         int TOTAL_PROB = 100;
         int TEST_SPAWN = random.nextInt(TOTAL_PROB);
 
-
-        if (TEST_SPAWN == SPAWN_BOOST && !objects.get(GameObjectContainer.PLAYER_INDEX).getMovementInfo().isBoosted()) {
+        // If randomly chosen to spawn, then spawn... Same follows for bubble object.
+        if (TEST_SPAWN == SPAWN_BOOST) {
             objects.get(GameObjectContainer.BOOST_INDEX).spawn(objects.get(GameObjectContainer.PLAYER_INDEX).getMovementInfo());
         }
 

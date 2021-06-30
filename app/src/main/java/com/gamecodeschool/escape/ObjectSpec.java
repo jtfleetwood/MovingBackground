@@ -2,6 +2,7 @@ package com.gamecodeschool.escape;
 
 import android.graphics.PointF;
 
+// Same as ScrollingShooter...
 abstract class ObjectSpec {
     private String mTag;
     private String mBitmapName;

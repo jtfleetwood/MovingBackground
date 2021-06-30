@@ -7,8 +7,10 @@ import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
+// Same implementation as scrolling shooter.
 public class UIController implements InputObserver {
 
+    // Is an observer because we are listening for touches from our "Touch" broadcaster.
     public UIController(GameEngineBroadcaster b) {
         b.addObserver(this);
     }

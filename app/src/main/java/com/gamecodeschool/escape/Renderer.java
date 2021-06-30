@@ -8,6 +8,7 @@ import android.view.SurfaceView;
 
 import java.util.ArrayList;
 
+// Same exact implementation as ScrollingShooter.
 public class Renderer {
     private Canvas mCanvas;
     private SurfaceHolder mSurfaceHolder;

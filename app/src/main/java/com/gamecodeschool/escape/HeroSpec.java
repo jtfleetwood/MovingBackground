@@ -2,6 +2,7 @@ package com.gamecodeschool.escape;
 
 import android.graphics.PointF;
 
+// Overall same concept as player-controlled object in ScrollingShooter.
 public class HeroSpec extends ObjectSpec {
     private static final String tag = "JetpackHero";
     private static final String bitMapName = "flyingspongebob";

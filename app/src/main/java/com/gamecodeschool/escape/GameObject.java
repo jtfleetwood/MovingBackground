@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
+// GameObject class same as ScrollingShooter for most part.
+
 public class GameObject {
     private MovementInfo movementInfo;
     private boolean isActive = false;
@@ -60,10 +62,6 @@ public class GameObject {
 
     boolean checkActive() {
         return isActive;
-    }
-
-    String getTag() {
-        return mTag;
     }
 
     void setInactive() {

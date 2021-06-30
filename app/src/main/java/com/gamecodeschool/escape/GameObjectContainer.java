@@ -5,6 +5,7 @@ import android.graphics.PointF;
 
 import java.util.ArrayList;
 
+// GameObject container concept same as ScrollingShooter. Components just changing..
 public class GameObjectContainer {
     public static final int BACKGROUND_INDEX = 0;
     public static final int PLAYER_INDEX = 1;

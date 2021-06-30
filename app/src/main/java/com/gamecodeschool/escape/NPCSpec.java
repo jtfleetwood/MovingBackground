@@ -2,6 +2,7 @@ package com.gamecodeschool.escape;
 
 import android.graphics.PointF;
 
+// Specification for NPC. Same concept as past implementations.
 public class NPCSpec extends ObjectSpec{
     private static final String tag = "NPC";
     private static final String bitMapName = "flyingdutchman";
