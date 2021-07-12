@@ -25,7 +25,7 @@ public class StdGraphicsComponent implements GraphicsComponent {
     }
 
     @Override
-    public void draw(Canvas canvas, Paint paint, MovementInfo m) {
+    public void draw(Canvas canvas, Paint paint, MovementInfo m, MovementInfo playerMovement) {
         if (m.getFacingRight()) {
             canvas.drawBitmap(mBitmap, m.getLocation().x, m.getLocation().y, paint);
         }

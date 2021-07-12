@@ -40,8 +40,8 @@ public class GameObject {
         movementInfo = m;
     }
 
-    void draw(Canvas canvas, Paint paint) {
-        graphicsComponent.draw(canvas, paint, movementInfo);
+    void draw(Canvas canvas, Paint paint, MovementInfo playerM) {
+        graphicsComponent.draw(canvas, paint, movementInfo, playerM);
     }
 
     void update(long fps, MovementInfo playerM) {

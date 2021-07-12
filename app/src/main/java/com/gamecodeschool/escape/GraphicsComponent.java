@@ -8,5 +8,5 @@ import android.graphics.PointF;
 public interface GraphicsComponent {
     void initialize(Context c, ObjectSpec s, PointF objectSize);
 
-    void draw(Canvas canvas, Paint paint, MovementInfo m);
+    void draw(Canvas canvas, Paint paint, MovementInfo m, MovementInfo playerMovement);
 }

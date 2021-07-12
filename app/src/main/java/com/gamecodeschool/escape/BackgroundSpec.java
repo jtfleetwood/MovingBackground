@@ -6,7 +6,7 @@ import android.graphics.PointF;
 // No changes vs. Scrolling Shooter.
 public class BackgroundSpec extends ObjectSpec {
     private static final String tag = "BeginningBackground";
-    private static final String bitmapName = "bikinibottom";
+    private static final String bitmapName = "gauntletroom";
     private static final float speed = 2f;
     private static final PointF relativeScale = new PointF(1f, 1f);
     private static final String[] components = {

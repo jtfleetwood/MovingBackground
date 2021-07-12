@@ -29,13 +29,14 @@ public class Renderer {
             if (gs.getDrawing()) {
                 for (GameObject object : objects) {
                     if (object.checkActive()) {
-                        object.draw(mCanvas, mPaint);
+                        object.draw(mCanvas, mPaint, objects.get(GameObjectContainer.PLAYER_INDEX).getMovementInfo());
                     }
                 }
             }
 
             if (gs.getGameOver()) {
-                objects.get(GameObjectContainer.BACKGROUND_INDEX).draw(mCanvas, mPaint);
+                objects.get(GameObjectContainer.BACKGROUND_INDEX).draw(mCanvas, mPaint, objects.get(GameObjectContainer.PLAYER_INDEX).getMovementInfo());
+                objects.get(GameObjectContainer.PLAYER_INDEX).draw(mCanvas, mPaint, objects.get(GameObjectContainer.PLAYER_INDEX).getMovementInfo());
             }
 
 
